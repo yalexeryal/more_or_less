@@ -23,7 +23,7 @@ class Cards:
             return 0
 
     def __str__(self):
-        return f"{self.rank} of {self.suit}"
+        return f"{self.rank} - {self.suit}"
 
 
 class Deck:
@@ -39,32 +39,31 @@ class Deck:
 
 def play():
     deck = Deck()
-    player1 = []
-    player2 = []
+    score = 0
+    current_card = deck.deal()
+    print(f"Текщая карта: {current_card}")
 
-    for _ in range(len(deck.cards) // 2):
-        player1.append(deck.deal())
-        player2.append(deck.deal())
+    while deck.cards:
+        guess = input("Больше или меньше? (+/-):").lower()
+        next_card = deck.deal()
+        print(f"Следующая карта: {next_card}")
 
-    while len(player1) and len(player2):
-        card1 = player1.pop(0)
-        card2 = player2.pop(0)
-        print(f"Игрок 1: {card1}, Игрок 2: {card2}")
-
-        if card1.value > card2.value:
-            player1.extend([card1, card2])
-            print("Игрок 1 выигрывает раунд!")
-        elif card1.value < card2.value:
-            player2.extend([card2, card1])
-            print("Игрок 2 выигрывает раунд!")
-
+        if guess == "+":
+            if next_card.value > current_card.value:
+                print("Правильно!")
+                score += 1
+            else:
+                print("Неправильно!")
+        elif guess == "-":
+            if next_card.value < current_card.value:
+                print("Правильно!")
+                score += 1
+            else:
+                print("Неправильно!")
         else:
-            print("Ничья!")
+            print("Неверный ввод")
 
-    if player1:
-        print("Игрок 1 выигрывает игру!")
-    else:
-        print("Игрок 2 выигрывает игру!")
-
+        current_card = next_card
+    print(f"Игра закончена со счетом: {score}")
 
 play()
